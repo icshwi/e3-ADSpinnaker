@@ -1,0 +1,4 @@
+[submodule "ADSpinnaker"]
+	path = ADSpinnaker
+	url = https://github.com/areaDetector/ADSpinnaker.git
+	ignore = all
