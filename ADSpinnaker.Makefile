@@ -17,8 +17,8 @@
 # 
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Monday, September  9 10:56:05 CEST 2019
-# version : 0.0.2
+# Date    : Monday, September 16 09:24:28 CEST 2019
+# version : 0.0.3
 #
 # The following lines are mandatory, please don't change them.
 where_am_I := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -57,28 +57,26 @@ USR_INCLUDES += -I$(where_am_I)$(SUPPORT)/include
 USR_CXXFLAGS_Linux += -D LINUX
 USR_CXXFLAGS_Linux += -std=c++11 -Wno-unknown-pragmas
 
+# Ubuntu needs the following ldflags
+USR_LDFLAGS += -Wl,--no-as-needed
+
 
 SOURCES += $(APPSRC)/SPFeature.cpp
 SOURCES += $(APPSRC)/ADSpinnaker.cpp
 
 DBDS += $(APPSRC)/ADSpinnakerSupport.dbd
 
-
-
-ifeq ($(T_A),linux-x86_64)
+ifeq ($(SUPPORT_EXTERNAL),NO)
 USR_LDFLAGS  += -Wl,--enable-new-dtags
 USR_LDFLAGS  += -Wl,-rpath=$(E3_MODULES_VENDOR_LIBS_LOCATION)
 USR_LDFLAGS  += -L$(E3_MODULES_VENDOR_LIBS_LOCATION)
 LIB_SYS_LIBS += Spinnaker
 LIB_SYS_LIBS += GCBase_gcc540_v3_0
 LIB_SYS_LIBS += GenApi_gcc540_v3_0
-#LIB_SYS_LIBS += Log_gcc540_v3_0
-#LIB_SYS_LIBS += MathParser_gcc540_v3_0
-#LIB_SYS_LIBS += NodeMapData_gcc540_v3_0
-#LIB_SYS_LIBS += XmlParser_gcc540_v3_0
-endif
-
-
+LIB_SYS_LIBS += Log_gcc540_v3_0
+LIB_SYS_LIBS += MathParser_gcc540_v3_0
+LIB_SYS_LIBS += NodeMapData_gcc540_v3_0
+LIB_SYS_LIBS += XmlParser_gcc540_v3_0
 
 # According to its makefile
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libSpinnaker.so
@@ -90,6 +88,17 @@ VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libLog_gcc540_v3_0.so
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libMathParser_gcc540_v3_0.so
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libNodeMapData_gcc540_v3_0.so
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libXmlParser_gcc540_v3_0.so
+else
+ifeq ($(T_A),linux-x86_64)
+LIB_SYS_LIBS += Spinnaker
+LIB_SYS_LIBS += GCBase_gcc540_v3_0
+LIB_SYS_LIBS += GenApi_gcc540_v3_0
+LIB_SYS_LIBS += Log_gcc540_v3_0
+LIB_SYS_LIBS += MathParser_gcc540_v3_0
+LIB_SYS_LIBS += NodeMapData_gcc540_v3_0
+LIB_SYS_LIBS += XmlParser_gcc540_v3_0
+USR_INCLUDES += -I/usr/include
+endif # ($(SUPPORT_EXTERNAL),NO)
 
 
 SCRIPTS += $(wildcard ../iocsh/*.iocsh)
@@ -130,8 +139,10 @@ $(TMPS):
 vlibs: $(VENDOR_LIBS)
 
 $(VENDOR_LIBS):
+ifeq ($(SUPPORT_EXTERNAL),NO)
 	$(QUIET)$(SUDO) install -m 755 -d $(E3_MODULES_VENDOR_LIBS_LOCATION)/
 	$(QUIET)$(SUDO) install -m 755 $@ $(E3_MODULES_VENDOR_LIBS_LOCATION)/
+endif
 
 .PHONY: $(VENDOR_LIBS) vlibs
 

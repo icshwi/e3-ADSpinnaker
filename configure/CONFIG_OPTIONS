@@ -1,6 +1,8 @@
 #
 # WITH_PVA:=NO
 #
+SUPPORT_EXTERNAL:=YES
+
 # The definitions shown below can also be placed in an untracked CONFIG_OPTIONS.local
 -include $(TOP)/configure/CONFIG_OPTIONS.local
 
