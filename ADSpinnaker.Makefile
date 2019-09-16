@@ -89,7 +89,6 @@ VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libMathParser_gcc540_v3_0.so
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libNodeMapData_gcc540_v3_0.so
 VENDOR_LIBS += $(SUPPORT)/os/linux-x86_64/libXmlParser_gcc540_v3_0.so
 else
-ifeq ($(T_A),linux-x86_64)
 LIB_SYS_LIBS += Spinnaker
 LIB_SYS_LIBS += GCBase_gcc540_v3_0
 LIB_SYS_LIBS += GenApi_gcc540_v3_0
