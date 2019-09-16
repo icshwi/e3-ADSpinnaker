@@ -17,8 +17,8 @@
 # 
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Monday, September 16 09:24:28 CEST 2019
-# version : 0.0.3
+# Date    : Monday, September 16 09:59:31 CEST 2019
+# version : 0.0.4
 #
 # The following lines are mandatory, please don't change them.
 where_am_I := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -53,13 +53,17 @@ APPDB:=$(APP)/Db
 APPSRC:=$(APP)/src
 
 
-USR_INCLUDES += -I$(where_am_I)$(SUPPORT)/include
+
 USR_CXXFLAGS_Linux += -D LINUX
 USR_CXXFLAGS_Linux += -std=c++11 -Wno-unknown-pragmas
 
 # Ubuntu needs the following ldflags
-USR_LDFLAGS += -Wl,--no-as-needed
+#USR_LDFLAGS += -Wl,--no-as-needed
 
+
+
+TEMPLATES += $(APPDB)/spinnaker.db
+TEMPLATES += $(APPDB)/spinnaker_settings.req
 
 SOURCES += $(APPSRC)/SPFeature.cpp
 SOURCES += $(APPSRC)/ADSpinnaker.cpp
@@ -67,6 +71,7 @@ SOURCES += $(APPSRC)/ADSpinnaker.cpp
 DBDS += $(APPSRC)/ADSpinnakerSupport.dbd
 
 ifeq ($(SUPPORT_EXTERNAL),NO)
+USR_INCLUDES += -I$(where_am_I)$(SUPPORT)/include
 USR_LDFLAGS  += -Wl,--enable-new-dtags
 USR_LDFLAGS  += -Wl,-rpath=$(E3_MODULES_VENDOR_LIBS_LOCATION)
 USR_LDFLAGS  += -L$(E3_MODULES_VENDOR_LIBS_LOCATION)
@@ -92,11 +97,12 @@ else
 LIB_SYS_LIBS += Spinnaker
 LIB_SYS_LIBS += GCBase_gcc540_v3_0
 LIB_SYS_LIBS += GenApi_gcc540_v3_0
-LIB_SYS_LIBS += Log_gcc540_v3_0
-LIB_SYS_LIBS += MathParser_gcc540_v3_0
-LIB_SYS_LIBS += NodeMapData_gcc540_v3_0
-LIB_SYS_LIBS += XmlParser_gcc540_v3_0
-USR_INCLUDES += -I/usr/include
+#LIB_SYS_LIBS += Log_gcc540_v3_0
+#LIB_SYS_LIBS += MathParser_gcc540_v3_0
+#LIB_SYS_LIBS += NodeMapData_gcc540_v3_0
+#LIB_SYS_LIBS += XmlParser_gcc540_v3_0
+
+USR_INCLUDES += -I/usr/include/spinnaker/
 endif # ($(SUPPORT_EXTERNAL),NO)
 
 
