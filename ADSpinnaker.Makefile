@@ -17,8 +17,8 @@
 # 
 # Author  : Jeong Han Lee
 # email   : jeonghan.lee@gmail.com
-# Date    : Monday, September 16 09:59:31 CEST 2019
-# version : 0.0.4
+# Date    : Monday, October  7 12:51:08 CEST 2019
+# version : 0.0.5
 #
 # The following lines are mandatory, please don't change them.
 where_am_I := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -73,8 +73,8 @@ DBDS += $(APPSRC)/ADSpinnakerSupport.dbd
 ifeq ($(SUPPORT_EXTERNAL),NO)
 USR_INCLUDES += -I$(where_am_I)$(SUPPORT)/include
 USR_LDFLAGS  += -Wl,--enable-new-dtags
-USR_LDFLAGS  += -Wl,-rpath=$(E3_MODULES_VENDOR_LIBS_LOCATION)
 USR_LDFLAGS  += -L$(E3_MODULES_VENDOR_LIBS_LOCATION)
+USR_LDFLAGS  += -Wl,-rpath,"\$$ORIGIN/../../../../../siteLibs/vendor/$(E3_MODULE_NAME)/$(E3_MODULE_VERSION)"
 LIB_SYS_LIBS += Spinnaker
 LIB_SYS_LIBS += GCBase_gcc540_v3_0
 LIB_SYS_LIBS += GenApi_gcc540_v3_0
