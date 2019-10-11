@@ -1,0 +1,3 @@
+file "spinnaker_settings.req",            P=$(P),  R=$(R)
+file "NDStdArrays_settings.req",          P=$(P),  R=$(R)
+file "commonPlugin_settings.req",         P=$(P)

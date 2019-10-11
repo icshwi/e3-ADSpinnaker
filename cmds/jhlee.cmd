@@ -12,11 +12,10 @@ epicsEnvSet("CAMERA_ID", "19299225")
 
 
 epicsEnvSet("AREA", "labs-utg-test")
-epicsEnvSet("DEVICE", "cam")
+epicsEnvSet("DEVICE", "cam1")
 
 epicsEnvSet("PREFIX", "$(AREA):$(DEVICE):")
 epicsEnvSet("IOCNAME", "$(AREA)-$(DEVICE)")
-epicsEnvSet("R", "$(DEVICE)1:")
 epicsEnvSet("CAM", "")
 epicsEnvSet("IMAGE", "Image1")
 
@@ -46,8 +45,8 @@ ADSpinnakerConfig("$(PORT)", "$(CAMERA_ID)", 0x1, 0)
 asynSetTraceIOMask($(PORT), 0, 2)
 
 
-dbLoadRecords("spinnaker.db", "P=$(PREFIX),R=$(R),PORT=$(PORT)")
-dbLoadRecords("$(TOP)/template/PGR_Blackfly_50S5C.template", "P=$(PREFIX),R=$(R),PORT=$(PORT)")
+dbLoadRecords("spinnaker.db", "P=$(PREFIX),R=,PORT=$(PORT)")
+dbLoadRecords("PGR_BlackflyS_50S5C.db", "P=$(PREFIX),R=,PORT=$(PORT)")
 
 
 set_requestfile_path("$(ADSpinnaker_DB)", "")
@@ -61,17 +60,16 @@ set_requestfile_path("$(TOP)", "cmds")
 # Create a standard arrays plugin
 NDStdArraysConfigure("$(IMAGE)", 5, 0, "$(PORT)", 0, 0)
 
-dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=$(R),PORT=$(IMAGE),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),TYPE=Int16,FTVL=SHORT,NELEMENTS=$(NELEMENTS)")
+dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=,PORT=$(IMAGE),ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),TYPE=Int16,FTVL=SHORT,NELEMENTS=$(NELEMENTS)")
 
 iocshLoad("$(ADCore_DIR)/commPlugins.iocsh", "P=$(PREFIX),UNIT=1,PORT=$(IMAGE),QSIZE=$(QSIZE),XSIZE=$(XSIZE),YSIZE=$(YSIZE),NCHANS=$(NCHANS),CBUFFS=$(CBUFFS)")
 
 iocshLoad("$(autosave_DIR)/autosave.iocsh", "AS_TOP=$(TOP),IOCNAME=$(IOCNAME)")
 
+
 iocInit()
 
-
-create_monitor_set("auto_settings.req", 5, "P=$(PREFIX),R=$(R),IMAGE=$(IMAGE):")
-
+create_monitor_set("auto_settings.req", 5, "P=$(PREFIX),R=,IMAGE=$(IMAGE):")
 
 # Wait for enum callbacks to complete
 epicsThreadSleep(2.0)
