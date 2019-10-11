@@ -1,5 +1,5 @@
 require ADSpinnaker,2.0.0
-require busy,1.7.2
+require busy,1.7.2-e45eda2
 
 #require autosave,5.9.0+
 #require iocStats,3.1.16

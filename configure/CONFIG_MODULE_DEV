@@ -21,8 +21,8 @@ E3_MODULE_NAME:=$(EPICS_MODULE_NAME)
 E3_MODULE_SRC_PATH:=ADSpinnaker-dev
 E3_MODULE_MAKEFILE:=$(EPICS_MODULE_NAME).Makefile
 
-#E3_MODULE_DEV_GITURL:="https://where your git repo which you would like to clone"
-E3_MODULE_DEV_GITURL:="https://github.com/areaDetector/ADSpinnaker.git"
+
+E3_MODULE_DEV_GITURL:="https://github.com/jeonghanlee/ADSpinnaker.git"
 
 # The definitions shown below can also be placed in an untracked CONFIG_MODULE_DEV.local
 -include $(TOP)/configure/CONFIG_MODULE_DEV.local
