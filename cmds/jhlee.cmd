@@ -32,6 +32,14 @@ epicsEnvSet("CBUFFS", "500")
 
 epicsEnvSet("NELEMENTS", "12592912")
 
+# Define all requestfile paths 
+set_requestfile_path("$(ADSpinnaker_DB)", "")
+set_requestfile_path("$(ADGenICam_DB)", "")
+set_requestfile_path("$(ADCore_DB)", "")
+set_requestfile_path("$(calc_DB)", "")
+set_requestfile_path("$(busy_DB)", "")
+set_requestfile_path("$(TOP)", "cmds")
+
 #-
 ADSpinnakerConfig("$(PORT)", "$(CAMERA_ID)", 0x1, 0)
 dbLoadRecords("spinnaker.db", "P=$(PREFIX),R=,PORT=$(PORT)")
@@ -43,28 +51,14 @@ dbLoadRecords("NDStdArrays.template", "P=$(PREFIX),R=,PORT=$(IMAGE),ADDR=0,TIMEO
 # Load the commPlugins.iocsh for ADCore
 iocshLoad("$(ADCore_DIR)/commPlugins.iocsh", "P=$(PREFIX),UNIT=1,PORT=$(IMAGE),QSIZE=$(QSIZE),XSIZE=$(XSIZE),YSIZE=$(YSIZE),NCHANS=$(NCHANS),CBUFFS=$(CBUFFS)")
 
-# Define all requestfile paths 
-set_requestfile_path("$(ADSpinnaker_DB)", "")
-set_requestfile_path("$(ADGenICam_DB)", "")
-set_requestfile_path("$(ADCore_DB)", "")
-set_requestfile_path("$(calc_DB)", "")
-set_requestfile_path("$(busy_DB)", "")
-
-
 # Load autosave iocsh
 iocshLoad("$(autosave_DIR)/autosave.iocsh", "AS_TOP=$(TOP),IOCNAME=$(IOCNAME)")
 
 #
 iocInit()
 
-#- create_montior_set for this specific ioc based on cmds/auto_settiongs.req
-#-file "spinnaker_settings.req",            P=$(P),  R=$(R)
-#-file "NDStdArrays_settings.req",          P=$(P),  R=$(R)
-#-file "commonPlugin_settings.req",         P=$(P)
-
-#set_requestfile_path("$(TOP)", "cmds")
-#create_monitor_set("auto_settings.req", 5, "P=$(PREFIX),R=,IMAGE=$(IMAGE):")
-create_monitor_set("$(TOP)/cmds/auto_settings.req", 5, "P=$(PREFIX),R=,IMAGE=$(IMAGE):")
+create_monitor_set("auto_settings.req", 5, "P=$(PREFIX),R=,IMAGE=$(IMAGE):")
+#create_monitor_set("$(TOP)/cmds/auto_settings.req", 5, "P=$(PREFIX),R=,IMAGE=$(IMAGE):")
 # Wait for enum callbacks to complete
 epicsThreadSleep(2.0)
 # Wait for callbacks on the property limits (DRVL, DRVH) to complete
